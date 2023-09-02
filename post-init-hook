@@ -6,3 +6,6 @@ pip install jupyterlab
 cat >>~/.bashrc <<EOF
 export PATH="\$PATH:~/.local/bin"
 EOF
+
+# PATH is ignored by the command passed to docker, so make sure jupyter is accessible
+sudo ln -s ~/.local/bin/jupyter /usr/local/bin
