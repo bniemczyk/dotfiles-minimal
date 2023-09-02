@@ -1,11 +1,23 @@
 #!/bin/bash
 
+if [[ ! -z "$RepositoryName" ]]; then
+        echo "setting hostname to $RepositoryName"
+        sudo hostname $RepositoryName;
+fi
+
+echo "installing python and pip"
 sudo apt update && sudo apt install -y python3-pip
+
+echo "installing jupyterlab"
 pip install jupyterlab
 
+echo "making jupyterlab accessible with a secure_path"
+# PATH is ignored by the command passed to docker, so make sure jupyter is accessible
+sudo ln -s ~/.local/bin/jupyter /usr/local/bin
+
+echo "updating ~/.bashrc"
 cat >>~/.bashrc <<EOF
 export PATH="\$PATH:~/.local/bin"
 EOF
 
-# PATH is ignored by the command passed to docker, so make sure jupyter is accessible
-sudo ln -s ~/.local/bin/jupyter /usr/local/bin
+echo "dotfiles post-init-hook finished"
